@@ -1,6 +1,6 @@
-package dn.cg.tm.cgtm.controller;
+package dn.cg.tm.controller;
 
-import dn.cg.tm.cgtm.dto.HomeDTO;
+import dn.cg.tm.dto.HomeDTO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

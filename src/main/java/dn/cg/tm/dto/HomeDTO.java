@@ -1,4 +1,4 @@
-package dn.cg.tm.cgtm.dto;
+package dn.cg.tm.dto;
 
 public class HomeDTO {
 
