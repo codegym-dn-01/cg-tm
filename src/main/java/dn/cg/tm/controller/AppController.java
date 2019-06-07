@@ -10,13 +10,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.security.Principal;
+import java.util.Date;
+
+
+@RestController
 public class AppController {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -49,7 +49,17 @@ public class AppController {
     @ResponseBody
     @GetMapping("/testuser")
     public User test(){
+        Date now = new Date();
+        System.out.println(now);
+        Date expiration = new Date(now.getTime()+3600000);
+        System.out.println(expiration);
         User user=userRepository.findByUsername("tuan");
         return user;
+    }
+    @ResponseBody
+    @GetMapping("/testauthor")
+    public String testAuthor(Principal principal){
+        Principal a = principal;
+        return principal.getName();
     }
 }

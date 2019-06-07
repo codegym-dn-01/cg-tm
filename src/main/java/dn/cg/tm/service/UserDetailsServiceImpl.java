@@ -10,9 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -21,6 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user=userRepository.findByUsername(s);
         if(user==null) {
@@ -29,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         String username=user.getUsername();
         String password=user.getPassword();
         Set<Role> roles = user.getRoleSet();
-        List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
+        List<GrantedAuthority> grantList = new ArrayList<>();
         if (roles != null) {
             for (Role role : roles) {
                 // ROLE_USER, ROLE_ADMIN,..

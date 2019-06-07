@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .withUser("user")
                 .password(passwordEncoder().encode("123"))
-                .roles("USER");
+                .roles("OPERATOR");
         auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
 
     }
@@ -61,8 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/", "/home","/login","/testuser").permitAll()
-                .antMatchers("/admin/test").hasAuthority("ROLE_ADMIN")
-                .antMatchers("/user/**").hasAnyRole("ADMIN","USER")
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/user/**").hasAnyRole("ADMIN","OPERATOR")
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }

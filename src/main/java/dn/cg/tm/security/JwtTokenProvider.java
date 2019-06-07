@@ -17,12 +17,9 @@ public class JwtTokenProvider {
     Logger logger= LoggerFactory.getLogger(JwtTokenProvider.class);
 
     public String generateToken(Authentication authentication){
-        Date now = new Date();
-        Date expiration = new Date(now.getTime()+EXPIRATION_TIME);
         return Jwts.builder()
-                    .setSubject(authentication.getName())
-                .setIssuedAt(now)
-                .setExpiration(expiration)
+                .setSubject(authentication.getName())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512,SECRET_KEY)
                 .compact();
     }
