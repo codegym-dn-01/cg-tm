@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.Enumeration;
 
 import static dn.cg.tm.security.SecurityConstants.*;
 
@@ -25,7 +26,9 @@ public class JwtTokenProvider {
     }
 
     public String getTokenFromRequest(HttpServletRequest request){
-        String bearerToken=request.getHeader(AUTH_HEADER);
+//        String bearerToken=request.getHeader(AUTH_HEADER);
+        Enumeration<String> headerNames = request.getHeaderNames();
+        String bearerToken=request.getHeader("authorization");
         if(bearerToken!=null && bearerToken.startsWith(TOKEN_PREFIX)){
             return bearerToken.substring(TOKEN_PREFIX.length());
         }

@@ -41,14 +41,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         System.out.println(passwordEncoder().encode("123"));
-        auth.inMemoryAuthentication()
-                .withUser("admin")
-                .password(passwordEncoder().encode("123"))
-                .roles("ADMIN")
-                .and()
-                .withUser("user")
-                .password(passwordEncoder().encode("123"))
-                .roles("OPERATOR");
+//        auth.inMemoryAuthentication()
+//                .withUser("admin")
+//                .password(passwordEncoder().encode("123"))
+//                .roles("ADMIN")
+//                .and()
+//                .withUser("user")
+//                .password(passwordEncoder().encode("123"))
+//                .roles("OPERATOR");
         auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
 
     }
@@ -63,7 +63,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/home","/login","/testuser").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasAnyRole("ADMIN","OPERATOR")
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+                .and().cors();
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

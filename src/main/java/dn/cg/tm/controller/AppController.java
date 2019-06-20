@@ -2,6 +2,7 @@ package dn.cg.tm.controller;
 
 import dn.cg.tm.domain.User;
 import dn.cg.tm.repository.UserRepository;
+import dn.cg.tm.security.JwtResponse;
 import dn.cg.tm.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -17,6 +19,7 @@ import java.util.Date;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class AppController {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -32,9 +35,9 @@ public class AppController {
     public ResponseEntity<?> sayAdmin() {
         return new ResponseEntity<>("Welcome admin to my website", HttpStatus.OK);
     }
-    @GetMapping("/user/test")
+    @GetMapping("/operator/test")
     public ResponseEntity<?> sayUser() {
-        return new ResponseEntity<>("Welcome user to my website", HttpStatus.OK);
+        return new ResponseEntity<>("Welcome operator to my website", HttpStatus.OK);
     }
 
     @PostMapping("/login")
@@ -44,7 +47,8 @@ public class AppController {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwtToken=jwtTokenProvider.generateToken(authentication);
-        return new ResponseEntity<>( jwtToken,HttpStatus.OK);
+        UserDetails userDetails =(UserDetails) authentication.getPrincipal();
+        return new ResponseEntity<>( new JwtResponse(jwtToken,userDetails.getUsername(),userDetails.getAuthorities()),HttpStatus.OK);
     }
     @ResponseBody
     @GetMapping("/testuser")
